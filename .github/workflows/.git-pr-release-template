@@ -1,0 +1,5 @@
+<%= ENV['GIT_PR_RELEASE_TITLE'] %>
+## リリース内容
+<% pull_requests.each do |pr| -%>
+<%=  pr.to_checklist_item %>
+<% end -%>
