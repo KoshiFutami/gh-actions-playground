@@ -20,7 +20,7 @@ jobs:
 
       - name: Get release branch name
         id: get_release_branch_name
-        run: echo "release_branch_name=$(echo ${github.ref} | sed -e 's/refs\/heads\///')" >> "$GITHUB_OUTPUT"
+        run: echo "release_branch_name=$(echo ${GITHUB_REF} | sed -e 's/refs\/heads\///')" >> "$GITHUB_OUTPUT"
 
       - name: Create a release pull request
         env:
