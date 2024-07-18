@@ -28,7 +28,7 @@ jobs:
           GIT_PR_RELEASE_BRANCH_PRODUCTION: master
           GIT_PR_RELEASE_BRANCH_STAGING: ${{ steps.get_release_branch_name.outputs.release_branch_name }}
           GIT_PR_RELEASE_LABELS: release
-          GIT_PR_RELEASE_TITLE: "[Release PR] `$GIT_PR_RELEASE_BRANCH_STAGING` to `$GIT_PR_RELEASE_BRANCH_PRODUCTION`"
+          GIT_PR_RELEASE_TITLE: "[Release PR] `${GIT_PR_RELEASE_BRANCH_STAGING}` to `${GIT_PR_RELEASE_BRANCH_PRODUCTION}`"
           GIT_PR_RELEASE_TEMPLATE: .github/workflows/.git-pr-release-template
         run: |
           gem install -N git-pr-release -v '1.9.0'
