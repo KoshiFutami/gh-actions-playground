@@ -1,5 +1,7 @@
 <%= ENV['GIT_PR_RELEASE_TITLE'] %>
 ## リリース内容
+リリース前日に各アイテムを確認し、問題なければチェックを入れてください。
+サブモジュールの更新がある場合は、同じコミットハッシュを参照しているか、FEチームに確認してください。
 <% pull_requests.each do |pr| -%>
 <%=  pr.to_checklist_item %>
 <% end -%>
