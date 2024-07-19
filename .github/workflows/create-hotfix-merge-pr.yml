@@ -1,0 +1,75 @@
+name: Create a pull request to merge hotfix into develop
+on:
+  pull_request:
+    branches: [master]
+    types: [closed]
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+defaults:
+  run:
+    shell: bash
+jobs:
+  create-pull-request:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true && github.head_ref != 'release'
+    steps:
+      - name: Decide a branch name
+        id: decide-branch
+        run: |
+          branch=master-to-develop/hotfix-${{ github.event.pull_request.head.sha }}
+          echo "branch=${branch}" >> "$GITHUB_OUTPUT"
+      - name: Create a pull request
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const {owner, repo} = context.repo
+            const masterBranch = "master"
+            const devBranch = "develop"
+
+            // fetch commit sha of develop branch
+            const {data} = await github.rest.git.getRef({
+              owner,
+              repo,
+              ref: `heads/${devBranch}`,
+            })
+
+            // create a new branch
+            const branch = "${{ steps.decide-branch.outputs.branch }}"
+            await github.rest.git.createRef({
+              owner,
+              repo,
+              ref: `refs/heads/${branch}`,
+              sha: data.object.sha,
+            })
+
+            const {actor, payload} = context
+            const {title, number} = payload.pull_request
+
+            // merge main into a new branch
+            await github.rest.repos.merge({
+              owner,
+              repo,
+              base: branch,
+              head: masterBranch,
+              commit_message: `Merge ${title}`,
+            })
+
+            // create a pull request
+            const pull = await github.rest.pulls.create({
+              owner,
+              repo,
+              base: devBranch,
+              head: branch,
+              title: `Merge hotfix to ${devBranch}: ${title}`,
+              body: `Merge #${number} for ${devBranch} branch, too`,
+            })
+
+            // assign an actor as reviewer
+            github.rest.pulls.requestReviewers({
+              owner,
+              repo,
+              pull_number: pull.data.number,
+              reviewers: [actor],
+            })
