@@ -13,8 +13,6 @@ jobs:
   create-pull-request:
     runs-on: ubuntu-latest
     if: github.event.pull_request.merged == true && github.head_ref != 'release'
-    permissions:
-      issues: write
     steps:
       - name: Decide a branch name
         id: decide-branch
