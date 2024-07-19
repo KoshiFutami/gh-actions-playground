@@ -63,9 +63,8 @@ jobs:
               base: devBranch,
               head: branch,
               title: `Hotfix #${number} の追いつき`,
-              body: |
-              下記のHotfix対応を${devBranch}に取り込みます。
-              - #${number}
+              body: `下記のHotfix対応を${devBranch}に取り込みます。
+                - #${number}`
             })
 
             // assign an actor as reviewer
