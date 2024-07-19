@@ -62,8 +62,8 @@ jobs:
               repo,
               base: devBranch,
               head: branch,
-              title: `Merge hotfix to ${devBranch}: ${title}`,
-              body: `Merge #${number} for ${devBranch} branch, too`,
+              title: `Hotfix #${number} の追いつき`,
+              body: `下記のHotfix対応を${devBranch}に取り込みます。<br>- #${number}`,
             })
 
             // assign an actor as reviewer
