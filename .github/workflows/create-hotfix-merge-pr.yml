@@ -11,7 +11,7 @@ defaults:
     shell: bash
 jobs:
   create-pull-request:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     if: github.event.pull_request.merged == true && github.head_ref != 'release'
     permissions: {}
     steps:
