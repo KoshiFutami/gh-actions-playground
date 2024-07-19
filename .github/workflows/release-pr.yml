@@ -3,7 +3,7 @@ on:
   workflow_dispatch: # Hotfix対応の際に手動で実行するため
   push:
     branches:
-      - release/*
+      - release
 
 jobs:
   create-release-pr:
